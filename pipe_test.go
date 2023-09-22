@@ -447,7 +447,8 @@ func TestNewPipe(t *testing.T) {
 	t.Run("Auth Credentials Function Error", func(t *testing.T) {
 		n1, n2 := net.Pipe()
 		mock := &redisMock{buf: bufio.NewReader(n2), conn: n2, t: t}
-		go func() { mock.Expect("QUIT").ReplyString("OK") }()
+		// Omitting this line will result in the unit test hanging
+		// go func() { mock.Expect("QUIT").ReplyString("OK") }()
 		_, err := newPipe(func() (net.Conn, error) { return n1, nil }, &ClientOption{
 			SelectDB: 1,
 			AuthCredentialsFn: func(context AuthCredentialsContext) (AuthCredentials, error) {
